@@ -1,2 +1,411 @@
+import 'dart:convert';
 
-I'm sorry, but as an AI model developed by OpenAI, I don't have the ability to directly write to or interact with external websites, databases, or files, including GitHub repositories. I can help you generate code or other content, but you'll need to manually copy and paste the content to the desired location. This limitation is in place to respect user privacy and data security. If you need help with a specific piece of code, feel free to ask!
+import 'package:buzzflix/auth/model&api/user_exist_model.dart';
+import 'package:buzzflix/modular/models&api/banner_model.dart' as banner;
+import 'package:buzzflix/modular/models&api/home_screen_model.dart' as home;
+import 'package:buzzflix/test/api_test.dart';
+import 'package:buzzflix/utils/abstracts/api_call.dart';
+import 'package:buzzflix/utils/controllers/theme_controller.dart';
+import 'package:buzzflix/utils/loading_handler.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:buzzflix/utils/extension/context.dart' as mode;
+import '../../auth/user_auth.dart';
+import '../../utils/snack_bar_handler.dart';
+import '../models&api/detail_page_model.dart' as detail;
+import 'detail_page2.dart';
+
+class DetailPage extends StatefulWidget {
+  final home.Content? id;
+  final banner.Message? message;
+  const DetailPage({
+    Key? key,
+    required this.id,
+    this.message,
+  }) : super(key: key);
+
+  @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  late detail.DetailPageModel detailPageModel;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    detail.DetailPageModel.getDetailPage(
+      widget.id == null
+          ? widget.message!.sectionid.toString()
+          : widget.id!.sectionid.toString(),
+    ).then((value) {
+      setState(() {
+        detailPageModel = value;
+        isLoading = false;
+      });
+    }, onError: (e) {
+      throw e;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ThemeController.builder(
+      child: (context2) {
+        return Scaffold(
+          backgroundColor: context.isDarkMode ? Colors.black : Colors.white,
+          appBar: AppBar(
+            elevation: 0,
+            iconTheme: context.isDarkMode
+                ? const IconThemeData(color: Colors.white)
+                : const IconThemeData(color: Colors.black),
+            title: Text(
+              widget.id == null
+                  ? widget.message!.coursename!
+                  : widget.id!.coursename,
+              style: TextStyle(
+                color: context.isDarkMode ? Colors.white : Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            backgroundColor: context.isDarkMode ? Colors.black : Colors.white,
+          ),
+          body: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: widget.id == null
+                            ? "${widget.message!.imgcommonpath}${widget.message!.img1}"
+                            : "${widget.id!.imgcommonpath}${widget.id!.img1}",
+                        fit: BoxFit.cover,
+                        height: 200,
+                        width: double.infinity,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //make two elevated button
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (UserExistModel.isUserExist) {
+                                  ApiCall.call(
+                                    path: "",
+                                    method: HttpMethod.post,
+                                    jsonParser: null,
+                                    body: {
+                                      "ClientNo": 99,
+                                      "ProcID": 2,
+                                      "Params":
+                                          "WatchPage|${widget.id == null ? widget.message!.sectionid : widget.id!.sectionid}",
+                                      "ParamPath": "WebsiteParams"
+                                    },
+                                  ).then((value) {
+                                    VimeoController.getVideo(
+                                            int.parse(
+                                                jsonDecode(value)["MESSAGE"][0]
+                                                    ["videoid"]),
+                                            "a983ea837278fc198ad399467f99d383")
+                                        .then((value) {
+                                      //TODO: Add video player
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) => MainVideoPlayer(
+                                      //       video: value,
+                                      //     ),
+                                      //   ),
+                                      // );
+                                    });
+                                  });
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => const UserAuth(),
+                                    useSafeArea: true,
+                                    barrierLabel: 'User Auth',
+                                    barrierColor: context.isDarkMode
+                                        ? Colors.white.withOpacity(0.1)
+                                        : Colors.black.withOpacity(0.3),
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(
+                                    Icons.play_arrow,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "Watch Now",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (UserExistModel.isUserExist) {
+                                  if (context.isDarkMode) {
+                                    LoadingHandler.of(context)
+                                        .loadingWidgetDark("Added...");
+                                  } else {
+                                    LoadingHandler.of(context)
+                                        .loadingWidgetLight("Added...");
+                                  }
+                                  ApiCall.call(
+                                    path: "",
+                                    method: HttpMethod.post,
+                                    jsonParser: null,
+                                    body: {
+                                      "ClientNo": 99,
+                                      "ProcID": 5,
+                                      "Params":
+                                          "InsertUpdate|0|${UserExistModel.userId}|${widget.id == null ? widget.message!.sectionid : widget.id!.sectionid}|WatchList|",
+                                      "ParamPath": "WebsiteParams"
+                                    },
+                                  ).then((value) {
+                                    Navigator.pop(context);
+                                    SnackBarHandler.of(context)
+                                        .showSuccess("Added to Watchlist");
+                                  });
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => const UserAuth(),
+                                    useSafeArea: true,
+                                    barrierLabel: 'User Auth',
+                                    barrierColor: context.isDarkMode
+                                        ? Colors.white.withOpacity(0.1)
+                                        : Colors.black.withOpacity(0.3),
+                                  );
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: context.isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  side: BorderSide(
+                                    color: context.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.favorite,
+                                    color: context.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "Wishlist",
+                                    style: TextStyle(
+                                      color: context.isDarkMode
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          widget.id == null
+                              ? widget.message!.sectionname
+                              : widget.id!.sectionname,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: context.isDarkMode
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          widget.id == null
+                              ? "${widget.message!.duration} - ${widget.message!.typename}"
+                              : "${widget.id!.duration} - ${widget.id!.sectiontitle}",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: context.isDarkMode
+                                ? Colors.white54
+                                : Colors.black54,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          widget.id == null
+                              ? widget.message!.coursedesc
+                              : widget.id!.coursedesc,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: context.isDarkMode
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Trailers & Extras",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: context.isDarkMode
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
+                      AspectRatio(
+                        aspectRatio: 1,
+                        child: ListView.builder(
+                          itemCount: detailPageModel.message.length,
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailPage2(
+                                      message: detailPageModel.message[index],
+                                      courseName: widget.id == null
+                                          ? widget.message!.coursename!
+                                          : widget.id!.coursename,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                elevation: 0,
+                                margin: const EdgeInsets.all(8),
+                                color: context.isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: AspectRatio(
+                                          aspectRatio: 16 / 9,
+                                          child: CachedNetworkImage(
+                                            imageUrl: detailPageModel
+                                                    .message[index]
+                                                    .imgcommonpath
+                                                    .trim() +
+                                                detailPageModel
+                                                    .message[index].img1
+                                                    .trim(),
+                                            fit: BoxFit.cover,
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(
+                                              Icons.error,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        "${detailPageModel.message[index].title} - ${detailPageModel.message[index].sectionTitle}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          color: context.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        detailPageModel
+                                            .message[index].description,
+                                        style: TextStyle(
+                                          color: context.isDarkMode
+                                              ? Colors.white54
+                                              : Colors.black,
+                                        ),
+                                        maxLines: 2,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+        );
+      },
+    );
+  }
+}
