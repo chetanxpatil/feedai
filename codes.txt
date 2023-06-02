@@ -1,411 +1,294 @@
-import 'dart:convert';
-
-import 'package:buzzflix/auth/model&api/user_exist_model.dart';
-import 'package:buzzflix/modular/models&api/banner_model.dart' as banner;
-import 'package:buzzflix/modular/models&api/home_screen_model.dart' as home;
-import 'package:buzzflix/test/api_test.dart';
-import 'package:buzzflix/utils/abstracts/api_call.dart';
-import 'package:buzzflix/utils/controllers/theme_controller.dart';
-import 'package:buzzflix/utils/loading_handler.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:buzzflix/utils/extension/context.dart' as mode;
-import '../../auth/user_auth.dart';
-import '../../utils/snack_bar_handler.dart';
-import '../models&api/detail_page_model.dart' as detail;
-import 'detail_page2.dart';
-
-class DetailPage extends StatefulWidget {
-  final home.Content? id;
-  final banner.Message? message;
-  const DetailPage({
-    Key? key,
-    required this.id,
-    this.message,
-  }) : super(key: key);
-
-  @override
-  State<DetailPage> createState() => _DetailPageState();
-}
-
-class _DetailPageState extends State<DetailPage> {
-  late detail.DetailPageModel detailPageModel;
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    detail.DetailPageModel.getDetailPage(
-      widget.id == null
-          ? widget.message!.sectionid.toString()
-          : widget.id!.sectionid.toString(),
-    ).then((value) {
-      setState(() {
-        detailPageModel = value;
-        isLoading = false;
-      });
-    }, onError: (e) {
-      throw e;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ThemeController.builder(
-      child: (context2) {
-        return Scaffold(
-          backgroundColor: context.isDarkMode ? Colors.black : Colors.white,
-          appBar: AppBar(
-            elevation: 0,
-            iconTheme: context.isDarkMode
-                ? const IconThemeData(color: Colors.white)
-                : const IconThemeData(color: Colors.black),
-            title: Text(
-              widget.id == null
-                  ? widget.message!.coursename!
-                  : widget.id!.coursename,
-              style: TextStyle(
-                color: context.isDarkMode ? Colors.white : Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            backgroundColor: context.isDarkMode ? Colors.black : Colors.white,
-          ),
-          body: isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl: widget.id == null
-                            ? "${widget.message!.imgcommonpath}${widget.message!.img1}"
-                            : "${widget.id!.imgcommonpath}${widget.id!.img1}",
-                        fit: BoxFit.cover,
-                        height: 200,
-                        width: double.infinity,
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          //make two elevated button
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                if (UserExistModel.isUserExist) {
-                                  ApiCall.call(
-                                    path: "",
-                                    method: HttpMethod.post,
-                                    jsonParser: null,
-                                    body: {
-                                      "ClientNo": 99,
-                                      "ProcID": 2,
-                                      "Params":
-                                          "WatchPage|${widget.id == null ? widget.message!.sectionid : widget.id!.sectionid}",
-                                      "ParamPath": "WebsiteParams"
-                                    },
-                                  ).then((value) {
-                                    VimeoController.getVideo(
-                                            int.parse(
-                                                jsonDecode(value)["MESSAGE"][0]
-                                                    ["videoid"]),
-                                            "a983ea837278fc198ad399467f99d383")
-                                        .then((value) {
-                                      //TODO: Add video player
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) => MainVideoPlayer(
-                                      //       video: value,
-                                      //     ),
-                                      //   ),
-                                      // );
-                                    });
-                                  });
-                                } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => const UserAuth(),
-                                    useSafeArea: true,
-                                    barrierLabel: 'User Auth',
-                                    barrierColor: context.isDarkMode
-                                        ? Colors.white.withOpacity(0.1)
-                                        : Colors.black.withOpacity(0.3),
-                                  );
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Icon(
-                                    Icons.play_arrow,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "Watch Now",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (UserExistModel.isUserExist) {
-                                  if (context.isDarkMode) {
-                                    LoadingHandler.of(context)
-                                        .loadingWidgetDark("Added...");
-                                  } else {
-                                    LoadingHandler.of(context)
-                                        .loadingWidgetLight("Added...");
-                                  }
-                                  ApiCall.call(
-                                    path: "",
-                                    method: HttpMethod.post,
-                                    jsonParser: null,
-                                    body: {
-                                      "ClientNo": 99,
-                                      "ProcID": 5,
-                                      "Params":
-                                          "InsertUpdate|0|${UserExistModel.userId}|${widget.id == null ? widget.message!.sectionid : widget.id!.sectionid}|WatchList|",
-                                      "ParamPath": "WebsiteParams"
-                                    },
-                                  ).then((value) {
-                                    Navigator.pop(context);
-                                    SnackBarHandler.of(context)
-                                        .showSuccess("Added to Watchlist");
-                                  });
-                                } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => const UserAuth(),
-                                    useSafeArea: true,
-                                    barrierLabel: 'User Auth',
-                                    barrierColor: context.isDarkMode
-                                        ? Colors.white.withOpacity(0.1)
-                                        : Colors.black.withOpacity(0.3),
-                                  );
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: context.isDarkMode
-                                    ? Colors.black
-                                    : Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  side: BorderSide(
-                                    color: context.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.favorite,
-                                    color: context.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "Wishlist",
-                                    style: TextStyle(
-                                      color: context.isDarkMode
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          widget.id == null
-                              ? widget.message!.sectionname
-                              : widget.id!.sectionname,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: context.isDarkMode
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text(
-                          widget.id == null
-                              ? "${widget.message!.duration} - ${widget.message!.typename}"
-                              : "${widget.id!.duration} - ${widget.id!.sectiontitle}",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: context.isDarkMode
-                                ? Colors.white54
-                                : Colors.black54,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          widget.id == null
-                              ? widget.message!.coursedesc
-                              : widget.id!.coursedesc,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: context.isDarkMode
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Trailers & Extras",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: context.isDarkMode
-                                ? Colors.white
-                                : Colors.black,
-                          ),
-                        ),
-                      ),
-                      AspectRatio(
-                        aspectRatio: 1,
-                        child: ListView.builder(
-                          itemCount: detailPageModel.message.length,
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DetailPage2(
-                                      message: detailPageModel.message[index],
-                                      courseName: widget.id == null
-                                          ? widget.message!.coursename!
-                                          : widget.id!.coursename,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Card(
-                                elevation: 0,
-                                margin: const EdgeInsets.all(8),
-                                color: context.isDarkMode
-                                    ? Colors.black
-                                    : Colors.white,
-                                child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: AspectRatio(
-                                          aspectRatio: 16 / 9,
-                                          child: CachedNetworkImage(
-                                            imageUrl: detailPageModel
-                                                    .message[index]
-                                                    .imgcommonpath
-                                                    .trim() +
-                                                detailPageModel
-                                                    .message[index].img1
-                                                    .trim(),
-                                            fit: BoxFit.cover,
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(
-                                              Icons.error,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text(
-                                        "${detailPageModel.message[index].title} - ${detailPageModel.message[index].sectionTitle}",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          color: context.isDarkMode
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text(
-                                        detailPageModel
-                                            .message[index].description,
-                                        style: TextStyle(
-                                          color: context.isDarkMode
-                                              ? Colors.white54
-                                              : Colors.black,
-                                        ),
-                                        maxLines: 2,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-        );
-      },
-    );
-  }
-}
+flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory>
+-> 
+.
+├── README.md
+├── analysis_options.yaml
+├── android
+│   ├── app
+│   │   ├── build.gradle
+│   │   └── src
+│   │       ├── debug
+│   │       │   └── AndroidManifest.xml
+│   │       ├── main
+│   │       │   ├── AndroidManifest.xml
+│   │       │   ├── java
+│   │       │   │   └── io
+│   │       │   │       └── flutter
+│   │       │   │           └── plugins
+│   │       │   │               └── GeneratedPluginRegistrant.java
+│   │       │   ├── kotlin
+│   │       │   │   └── com
+│   │       │   │       └── livnium
+│   │       │   │           └── buzzflix
+│   │       │   │               └── MainActivity.kt
+│   │       │   └── res
+│   │       │       ├── drawable
+│   │       │       │   └── launch_background.xml
+│   │       │       ├── drawable-v21
+│   │       │       │   └── launch_background.xml
+│   │       │       ├── mipmap-hdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-mdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xxhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── mipmap-xxxhdpi
+│   │       │       │   └── ic_launcher.png
+│   │       │       ├── values
+│   │       │       │   └── styles.xml
+│   │       │       └── values-night
+│   │       │           └── styles.xml
+│   │       └── profile
+│   │           └── AndroidManifest.xml
+│   ├── build.gradle
+│   ├── buzzflix_android.iml
+│   ├── gradle
+│   │   └── wrapper
+│   │       ├── gradle-wrapper.jar
+│   │       └── gradle-wrapper.properties
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   ├── local.properties
+│   └── settings.gradle
+├── assets
+│   ├── images
+│   │   ├── buzz.png
+│   │   └── buzzflix.png
+│   └── video
+│       ├── black.mp4
+│       └── white.mp4
+├── buzzflix.iml
+├── ios
+│   ├── Flutter
+│   │   ├── AppFrameworkInfo.plist
+│   │   ├── Debug.xcconfig
+│   │   ├── Generated.xcconfig
+│   │   ├── Release.xcconfig
+│   │   └── flutter_export_environment.sh
+│   ├── Podfile
+│   ├── Podfile.lock
+│   ├── Pods
+│   │   ├── Headers
+│   │   ├── Local Podspecs
+│   │   │   ├── Flutter.podspec.json
+│   │   │   ├── flutter_screen_wake.podspec.json
+│   │   │   ├── orientation.podspec.json
+│   │   │   ├── path_provider_ios.podspec.json
+│   │   │   ├── video_player_avfoundation.podspec.json
+│   │   │   └── wakelock.podspec.json
+│   │   ├── Pods.xcodeproj
+│   │   │   ├── project.pbxproj
+│   │   │   └── xcuserdata
+│   │   │       └── chetanpatil.xcuserdatad
+│   │   │           └── xcschemes
+│   │   │               ├── Flutter.xcscheme
+│   │   │               ├── Pods-Runner.xcscheme
+│   │   │               ├── flutter_screen_wake.xcscheme
+│   │   │               ├── orientation.xcscheme
+│   │   │               ├── path_provider_ios.xcscheme
+│   │   │               ├── video_player_avfoundation.xcscheme
+│   │   │               ├── wakelock.xcscheme
+│   │   │               └── xcschememanagement.plist
+│   │   └── Target Support Files
+│   │       ├── Flutter
+│   │       │   ├── Flutter.debug.xcconfig
+│   │       │   └── Flutter.release.xcconfig
+│   │       ├── Pods-Runner
+│   │       │   ├── Pods-Runner-Info.plist
+│   │       │   ├── Pods-Runner-acknowledgements.markdown
+│   │       │   ├── Pods-Runner-acknowledgements.plist
+│   │       │   ├── Pods-Runner-dummy.m
+│   │       │   ├── Pods-Runner-frameworks-Debug-input-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Debug-output-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Profile-input-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Profile-output-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Release-input-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks-Release-output-files.xcfilelist
+│   │       │   ├── Pods-Runner-frameworks.sh
+│   │       │   ├── Pods-Runner-umbrella.h
+│   │       │   ├── Pods-Runner.debug.xcconfig
+│   │       │   ├── Pods-Runner.modulemap
+│   │       │   ├── Pods-Runner.profile.xcconfig
+│   │       │   └── Pods-Runner.release.xcconfig
+│   │       ├── flutter_screen_wake
+│   │       │   ├── flutter_screen_wake-Info.plist
+│   │       │   ├── flutter_screen_wake-dummy.m
+│   │       │   ├── flutter_screen_wake-prefix.pch
+│   │       │   ├── flutter_screen_wake-umbrella.h
+│   │       │   ├── flutter_screen_wake.debug.xcconfig
+│   │       │   ├── flutter_screen_wake.modulemap
+│   │       │   └── flutter_screen_wake.release.xcconfig
+│   │       ├── orientation
+│   │       │   ├── orientation-Info.plist
+│   │       │   ├── orientation-dummy.m
+│   │       │   ├── orientation-prefix.pch
+│   │       │   ├── orientation-umbrella.h
+│   │       │   ├── orientation.debug.xcconfig
+│   │       │   ├── orientation.modulemap
+│   │       │   └── orientation.release.xcconfig
+│   │       ├── path_provider_ios
+│   │       │   ├── path_provider_ios-Info.plist
+│   │       │   ├── path_provider_ios-dummy.m
+│   │       │   ├── path_provider_ios-prefix.pch
+│   │       │   ├── path_provider_ios-umbrella.h
+│   │       │   ├── path_provider_ios.debug.xcconfig
+│   │       │   ├── path_provider_ios.modulemap
+│   │       │   └── path_provider_ios.release.xcconfig
+│   │       ├── video_player_avfoundation
+│   │       │   ├── video_player_avfoundation-Info.plist
+│   │       │   ├── video_player_avfoundation-dummy.m
+│   │       │   ├── video_player_avfoundation-prefix.pch
+│   │       │   ├── video_player_avfoundation-umbrella.h
+│   │       │   ├── video_player_avfoundation.debug.xcconfig
+│   │       │   ├── video_player_avfoundation.modulemap
+│   │       │   └── video_player_avfoundation.release.xcconfig
+│   │       └── wakelock
+│   │           ├── wakelock-Info.plist
+│   │           ├── wakelock-dummy.m
+│   │           ├── wakelock-prefix.pch
+│   │           ├── wakelock-umbrella.h
+│   │           ├── wakelock.debug.xcconfig
+│   │           ├── wakelock.modulemap
+│   │           └── wakelock.release.xcconfig
+│   ├── Runner
+│   │   ├── AppDelegate.swift
+│   │   ├── Assets.xcassets
+│   │   │   ├── AppIcon.appiconset
+│   │   │   │   ├── Contents.json
+│   │   │   │   ├── Icon-App-1024x1024@1x.png
+│   │   │   │   ├── Icon-App-20x20@1x.png
+│   │   │   │   ├── Icon-App-20x20@2x.png
+│   │   │   │   ├── Icon-App-20x20@3x.png
+│   │   │   │   ├── Icon-App-29x29@1x.png
+│   │   │   │   ├── Icon-App-29x29@2x.png
+│   │   │   │   ├── Icon-App-29x29@3x.png
+│   │   │   │   ├── Icon-App-40x40@1x.png
+│   │   │   │   ├── Icon-App-40x40@2x.png
+│   │   │   │   ├── Icon-App-40x40@3x.png
+│   │   │   │   ├── Icon-App-60x60@2x.png
+│   │   │   │   ├── Icon-App-60x60@3x.png
+│   │   │   │   ├── Icon-App-76x76@1x.png
+│   │   │   │   ├── Icon-App-76x76@2x.png
+│   │   │   │   └── Icon-App-83.5x83.5@2x.png
+│   │   │   └── LaunchImage.imageset
+│   │   │       ├── Contents.json
+│   │   │       ├── LaunchImage.png
+│   │   │       ├── LaunchImage@2x.png
+│   │   │       ├── LaunchImage@3x.png
+│   │   │       └── README.md
+│   │   ├── Base.lproj
+│   │   │   ├── LaunchScreen.storyboard
+│   │   │   └── Main.storyboard
+│   │   ├── GeneratedPluginRegistrant.h
+│   │   ├── GeneratedPluginRegistrant.m
+│   │   ├── Info.plist
+│   │   └── Runner-Bridging-Header.h
+│   ├── Runner.xcodeproj
+│   │   ├── project.pbxproj
+│   │   ├── project.xcworkspace
+│   │   │   ├── contents.xcworkspacedata
+│   │   │   └── xcshareddata
+│   │   │       ├── IDEWorkspaceChecks.plist
+│   │   │       ├── WorkspaceSettings.xcsettings
+│   │   │       └── swiftpm
+│   │   │           └── configuration
+│   │   └── xcshareddata
+│   │       └── xcschemes
+│   │           └── Runner.xcscheme
+│   ├── Runner.xcworkspace
+│   │   ├── contents.xcworkspacedata
+│   │   ├── xcshareddata
+│   │   │   ├── IDEWorkspaceChecks.plist
+│   │   │   ├── WorkspaceSettings.xcsettings
+│   │   │   └── swiftpm
+│   │   │       └── configuration
+│   │   └── xcuserdata
+│   │       └── chetanpatil.xcuserdatad
+│   │           └── UserInterfaceState.xcuserstate
+│   └── RunnerTests
+│       └── RunnerTests.swift
+├── lib
+│   ├── auth
+│   │   ├── model&api
+│   │   │   └── user_exist_model.dart
+│   │   └── user_auth.dart
+│   ├── build
+│   │   └── ios
+│   │       └── Pods.build
+│   │           └── Release-iphonesimulator
+│   │               ├── Flutter.build
+│   │               │   └── dgph
+│   │               ├── Pods-Runner.build
+│   │               │   └── dgph
+│   │               ├── flutter_screen_wake.build
+│   │               │   └── dgph
+│   │               ├── orientation.build
+│   │               │   └── dgph
+│   │               ├── path_provider_ios.build
+│   │               │   └── dgph
+│   │               ├── video_player_avfoundation.build
+│   │               │   └── dgph
+│   │               └── wakelock.build
+│   │                   └── dgph
+│   ├── main.dart
+│   ├── modular
+│   │   ├── dashboard
+│   │   │   ├── account.dart
+│   │   │   ├── buzz_search.dart
+│   │   │   ├── components
+│   │   │   │   ├── dashboard_carousel.dart
+│   │   │   │   └── dashboard_categories.dart
+│   │   │   ├── dashboard.dart
+│   │   │   ├── detail_page.dart
+│   │   │   ├── detail_page2.dart
+│   │   │   ├── drawer.dart
+│   │   │   ├── subscriptions.dart
+│   │   │   └── watch_list.dart
+│   │   └── models&api
+│   │       ├── banner_model.dart
+│   │       ├── detail_page_model.dart
+│   │       ├── home_screen_model.dart
+│   │       └── search_model.dart
+│   ├── non-modular
+│   │   └── splashscreen
+│   │       └── splashscreen.dart
+│   ├── test
+│   │   ├── api_test.dart
+│   │   └── video_model.dart
+│   ├── utils
+│   │   ├── abstracts
+│   │   │   └── api_call.dart
+│   │   ├── annotations
+│   │   ├── config.dart
+│   │   ├── controllers
+│   │   │   ├── mega_cache.dart
+│   │   │   └── theme_controller.dart
+│   │   ├── extension
+│   │   │   ├── context.dart
+│   │   │   └── string.dart
+│   │   ├── loading_handler.dart
+│   │   ├── snack_bar_handler.dart
+│   │   └── widgets
+│   │       ├── custom_password_field.dart
+│   │       ├── custom_text_button.dart
+│   │       ├── custom_text_field.dart
+│   │       └── sb_handler.dart
+│   └── video_player
+│       └── main_video_player.dart
+├── packages
+├── pubspec.lock
+├── pubspec.yaml
+├── test
+│   └── widget_test.dart
+└── web
+    ├── favicon.png
+    ├── icons
+    │   ├── Icon-192.png
+    │   ├── Icon-512.png
+    │   ├── Icon-maskable-192.png
+    │   └── Icon-maskable-512.png
+    ├── index.html
+    └── manifest.json
