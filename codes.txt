@@ -1,294 +1,1018 @@
-flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory>
--> 
-.
-├── README.md
-├── analysis_options.yaml
-├── android
-│   ├── app
-│   │   ├── build.gradle
-│   │   └── src
-│   │       ├── debug
-│   │       │   └── AndroidManifest.xml
-│   │       ├── main
-│   │       │   ├── AndroidManifest.xml
-│   │       │   ├── java
-│   │       │   │   └── io
-│   │       │   │       └── flutter
-│   │       │   │           └── plugins
-│   │       │   │               └── GeneratedPluginRegistrant.java
-│   │       │   ├── kotlin
-│   │       │   │   └── com
-│   │       │   │       └── livnium
-│   │       │   │           └── buzzflix
-│   │       │   │               └── MainActivity.kt
-│   │       │   └── res
-│   │       │       ├── drawable
-│   │       │       │   └── launch_background.xml
-│   │       │       ├── drawable-v21
-│   │       │       │   └── launch_background.xml
-│   │       │       ├── mipmap-hdpi
-│   │       │       │   └── ic_launcher.png
-│   │       │       ├── mipmap-mdpi
-│   │       │       │   └── ic_launcher.png
-│   │       │       ├── mipmap-xhdpi
-│   │       │       │   └── ic_launcher.png
-│   │       │       ├── mipmap-xxhdpi
-│   │       │       │   └── ic_launcher.png
-│   │       │       ├── mipmap-xxxhdpi
-│   │       │       │   └── ic_launcher.png
-│   │       │       ├── values
-│   │       │       │   └── styles.xml
-│   │       │       └── values-night
-│   │       │           └── styles.xml
-│   │       └── profile
-│   │           └── AndroidManifest.xml
-│   ├── build.gradle
-│   ├── buzzflix_android.iml
-│   ├── gradle
-│   │   └── wrapper
-│   │       ├── gradle-wrapper.jar
-│   │       └── gradle-wrapper.properties
-│   ├── gradle.properties
-│   ├── gradlew
-│   ├── gradlew.bat
-│   ├── local.properties
-│   └── settings.gradle
-├── assets
-│   ├── images
-│   │   ├── buzz.png
-│   │   └── buzzflix.png
-│   └── video
-│       ├── black.mp4
-│       └── white.mp4
-├── buzzflix.iml
-├── ios
-│   ├── Flutter
-│   │   ├── AppFrameworkInfo.plist
-│   │   ├── Debug.xcconfig
-│   │   ├── Generated.xcconfig
-│   │   ├── Release.xcconfig
-│   │   └── flutter_export_environment.sh
-│   ├── Podfile
-│   ├── Podfile.lock
-│   ├── Pods
-│   │   ├── Headers
-│   │   ├── Local Podspecs
-│   │   │   ├── Flutter.podspec.json
-│   │   │   ├── flutter_screen_wake.podspec.json
-│   │   │   ├── orientation.podspec.json
-│   │   │   ├── path_provider_ios.podspec.json
-│   │   │   ├── video_player_avfoundation.podspec.json
-│   │   │   └── wakelock.podspec.json
-│   │   ├── Pods.xcodeproj
-│   │   │   ├── project.pbxproj
-│   │   │   └── xcuserdata
-│   │   │       └── chetanpatil.xcuserdatad
-│   │   │           └── xcschemes
-│   │   │               ├── Flutter.xcscheme
-│   │   │               ├── Pods-Runner.xcscheme
-│   │   │               ├── flutter_screen_wake.xcscheme
-│   │   │               ├── orientation.xcscheme
-│   │   │               ├── path_provider_ios.xcscheme
-│   │   │               ├── video_player_avfoundation.xcscheme
-│   │   │               ├── wakelock.xcscheme
-│   │   │               └── xcschememanagement.plist
-│   │   └── Target Support Files
-│   │       ├── Flutter
-│   │       │   ├── Flutter.debug.xcconfig
-│   │       │   └── Flutter.release.xcconfig
-│   │       ├── Pods-Runner
-│   │       │   ├── Pods-Runner-Info.plist
-│   │       │   ├── Pods-Runner-acknowledgements.markdown
-│   │       │   ├── Pods-Runner-acknowledgements.plist
-│   │       │   ├── Pods-Runner-dummy.m
-│   │       │   ├── Pods-Runner-frameworks-Debug-input-files.xcfilelist
-│   │       │   ├── Pods-Runner-frameworks-Debug-output-files.xcfilelist
-│   │       │   ├── Pods-Runner-frameworks-Profile-input-files.xcfilelist
-│   │       │   ├── Pods-Runner-frameworks-Profile-output-files.xcfilelist
-│   │       │   ├── Pods-Runner-frameworks-Release-input-files.xcfilelist
-│   │       │   ├── Pods-Runner-frameworks-Release-output-files.xcfilelist
-│   │       │   ├── Pods-Runner-frameworks.sh
-│   │       │   ├── Pods-Runner-umbrella.h
-│   │       │   ├── Pods-Runner.debug.xcconfig
-│   │       │   ├── Pods-Runner.modulemap
-│   │       │   ├── Pods-Runner.profile.xcconfig
-│   │       │   └── Pods-Runner.release.xcconfig
-│   │       ├── flutter_screen_wake
-│   │       │   ├── flutter_screen_wake-Info.plist
-│   │       │   ├── flutter_screen_wake-dummy.m
-│   │       │   ├── flutter_screen_wake-prefix.pch
-│   │       │   ├── flutter_screen_wake-umbrella.h
-│   │       │   ├── flutter_screen_wake.debug.xcconfig
-│   │       │   ├── flutter_screen_wake.modulemap
-│   │       │   └── flutter_screen_wake.release.xcconfig
-│   │       ├── orientation
-│   │       │   ├── orientation-Info.plist
-│   │       │   ├── orientation-dummy.m
-│   │       │   ├── orientation-prefix.pch
-│   │       │   ├── orientation-umbrella.h
-│   │       │   ├── orientation.debug.xcconfig
-│   │       │   ├── orientation.modulemap
-│   │       │   └── orientation.release.xcconfig
-│   │       ├── path_provider_ios
-│   │       │   ├── path_provider_ios-Info.plist
-│   │       │   ├── path_provider_ios-dummy.m
-│   │       │   ├── path_provider_ios-prefix.pch
-│   │       │   ├── path_provider_ios-umbrella.h
-│   │       │   ├── path_provider_ios.debug.xcconfig
-│   │       │   ├── path_provider_ios.modulemap
-│   │       │   └── path_provider_ios.release.xcconfig
-│   │       ├── video_player_avfoundation
-│   │       │   ├── video_player_avfoundation-Info.plist
-│   │       │   ├── video_player_avfoundation-dummy.m
-│   │       │   ├── video_player_avfoundation-prefix.pch
-│   │       │   ├── video_player_avfoundation-umbrella.h
-│   │       │   ├── video_player_avfoundation.debug.xcconfig
-│   │       │   ├── video_player_avfoundation.modulemap
-│   │       │   └── video_player_avfoundation.release.xcconfig
-│   │       └── wakelock
-│   │           ├── wakelock-Info.plist
-│   │           ├── wakelock-dummy.m
-│   │           ├── wakelock-prefix.pch
-│   │           ├── wakelock-umbrella.h
-│   │           ├── wakelock.debug.xcconfig
-│   │           ├── wakelock.modulemap
-│   │           └── wakelock.release.xcconfig
-│   ├── Runner
-│   │   ├── AppDelegate.swift
-│   │   ├── Assets.xcassets
-│   │   │   ├── AppIcon.appiconset
-│   │   │   │   ├── Contents.json
-│   │   │   │   ├── Icon-App-1024x1024@1x.png
-│   │   │   │   ├── Icon-App-20x20@1x.png
-│   │   │   │   ├── Icon-App-20x20@2x.png
-│   │   │   │   ├── Icon-App-20x20@3x.png
-│   │   │   │   ├── Icon-App-29x29@1x.png
-│   │   │   │   ├── Icon-App-29x29@2x.png
-│   │   │   │   ├── Icon-App-29x29@3x.png
-│   │   │   │   ├── Icon-App-40x40@1x.png
-│   │   │   │   ├── Icon-App-40x40@2x.png
-│   │   │   │   ├── Icon-App-40x40@3x.png
-│   │   │   │   ├── Icon-App-60x60@2x.png
-│   │   │   │   ├── Icon-App-60x60@3x.png
-│   │   │   │   ├── Icon-App-76x76@1x.png
-│   │   │   │   ├── Icon-App-76x76@2x.png
-│   │   │   │   └── Icon-App-83.5x83.5@2x.png
-│   │   │   └── LaunchImage.imageset
-│   │   │       ├── Contents.json
-│   │   │       ├── LaunchImage.png
-│   │   │       ├── LaunchImage@2x.png
-│   │   │       ├── LaunchImage@3x.png
-│   │   │       └── README.md
-│   │   ├── Base.lproj
-│   │   │   ├── LaunchScreen.storyboard
-│   │   │   └── Main.storyboard
-│   │   ├── GeneratedPluginRegistrant.h
-│   │   ├── GeneratedPluginRegistrant.m
-│   │   ├── Info.plist
-│   │   └── Runner-Bridging-Header.h
-│   ├── Runner.xcodeproj
-│   │   ├── project.pbxproj
-│   │   ├── project.xcworkspace
-│   │   │   ├── contents.xcworkspacedata
-│   │   │   └── xcshareddata
-│   │   │       ├── IDEWorkspaceChecks.plist
-│   │   │       ├── WorkspaceSettings.xcsettings
-│   │   │       └── swiftpm
-│   │   │           └── configuration
-│   │   └── xcshareddata
-│   │       └── xcschemes
-│   │           └── Runner.xcscheme
-│   ├── Runner.xcworkspace
-│   │   ├── contents.xcworkspacedata
-│   │   ├── xcshareddata
-│   │   │   ├── IDEWorkspaceChecks.plist
-│   │   │   ├── WorkspaceSettings.xcsettings
-│   │   │   └── swiftpm
-│   │   │       └── configuration
-│   │   └── xcuserdata
-│   │       └── chetanpatil.xcuserdatad
-│   │           └── UserInterfaceState.xcuserstate
-│   └── RunnerTests
-│       └── RunnerTests.swift
-├── lib
-│   ├── auth
-│   │   ├── model&api
-│   │   │   └── user_exist_model.dart
-│   │   └── user_auth.dart
-│   ├── build
-│   │   └── ios
-│   │       └── Pods.build
-│   │           └── Release-iphonesimulator
-│   │               ├── Flutter.build
-│   │               │   └── dgph
-│   │               ├── Pods-Runner.build
-│   │               │   └── dgph
-│   │               ├── flutter_screen_wake.build
-│   │               │   └── dgph
-│   │               ├── orientation.build
-│   │               │   └── dgph
-│   │               ├── path_provider_ios.build
-│   │               │   └── dgph
-│   │               ├── video_player_avfoundation.build
-│   │               │   └── dgph
-│   │               └── wakelock.build
-│   │                   └── dgph
-│   ├── main.dart
-│   ├── modular
-│   │   ├── dashboard
-│   │   │   ├── account.dart
-│   │   │   ├── buzz_search.dart
-│   │   │   ├── components
-│   │   │   │   ├── dashboard_carousel.dart
-│   │   │   │   └── dashboard_categories.dart
-│   │   │   ├── dashboard.dart
-│   │   │   ├── detail_page.dart
-│   │   │   ├── detail_page2.dart
-│   │   │   ├── drawer.dart
-│   │   │   ├── subscriptions.dart
-│   │   │   └── watch_list.dart
-│   │   └── models&api
-│   │       ├── banner_model.dart
-│   │       ├── detail_page_model.dart
-│   │       ├── home_screen_model.dart
-│   │       └── search_model.dart
-│   ├── non-modular
-│   │   └── splashscreen
-│   │       └── splashscreen.dart
-│   ├── test
-│   │   ├── api_test.dart
-│   │   └── video_model.dart
-│   ├── utils
-│   │   ├── abstracts
-│   │   │   └── api_call.dart
-│   │   ├── annotations
-│   │   ├── config.dart
-│   │   ├── controllers
-│   │   │   ├── mega_cache.dart
-│   │   │   └── theme_controller.dart
-│   │   ├── extension
-│   │   │   ├── context.dart
-│   │   │   └── string.dart
-│   │   ├── loading_handler.dart
-│   │   ├── snack_bar_handler.dart
-│   │   └── widgets
-│   │       ├── custom_password_field.dart
-│   │       ├── custom_text_button.dart
-│   │       ├── custom_text_field.dart
-│   │       └── sb_handler.dart
-│   └── video_player
-│       └── main_video_player.dart
-├── packages
-├── pubspec.lock
-├── pubspec.yaml
-├── test
-│   └── widget_test.dart
-└── web
-    ├── favicon.png
-    ├── icons
-    │   ├── Icon-192.png
-    │   ├── Icon-512.png
-    │   ├── Icon-maskable-192.png
-    │   └── Icon-maskable-512.png
-    ├── index.html
-    └── manifest.json
+{
+    "uri": "/videos/780309022",
+    "name": "Ek Unsuni Dhun - Trailer.mp4",
+    "description": null,
+    "type": "video",
+    "link": "https://vimeo.com/780309022",
+    "player_embed_url": "https://player.vimeo.com/video/780309022?h=08b1db5d7a",
+    "duration": 77,
+    "width": 3840,
+    "language": null,
+    "height": 2160,
+    "embed": {
+        "html": "<iframe src=\"https://player.vimeo.com/video/780309022?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=271672\" width=\"3840\" height=\"2160\" frameborder=\"0\" allow=\"autoplay; fullscreen; picture-in-picture\" allowfullscreen title=\"Ek Unsuni Dhun - Trailer.mp4\"></iframe>",
+        "badges": {
+            "hdr": false,
+            "live": {
+                "streaming": false,
+                "archived": false
+            },
+            "staff_pick": {
+                "normal": false,
+                "best_of_the_month": false,
+                "best_of_the_year": false,
+                "premiere": false
+            },
+            "vod": false,
+            "weekend_challenge": false
+        },
+        "interactive": false,
+        "buttons": {
+            "watchlater": false,
+            "share": false,
+            "embed": false,
+            "hd": false,
+            "fullscreen": true,
+            "scaling": true,
+            "like": false
+        },
+        "logos": {
+            "vimeo": false,
+            "custom": {
+                "active": false,
+                "url": null,
+                "link": null,
+                "use_link": false,
+                "sticky": false
+            }
+        },
+        "title": {
+            "name": "hide",
+            "owner": "hide",
+            "portrait": "show"
+        },
+        "end_screen": [],
+        "playbar": true,
+        "pip": true,
+        "autopip": true,
+        "volume": true,
+        "color": "00adef",
+        "colors": {
+            "color_one": "000000",
+            "color_two": "00adef",
+            "color_three": "ffffff",
+            "color_four": "000000"
+        },
+        "event_schedule": true,
+        "has_cards": false,
+        "outro_type": "videos",
+        "show_timezone": false,
+        "cards": [],
+        "uri": null,
+        "email_capture_form": null,
+        "speed": true
+    },
+    "created_time": "2022-12-12T10:37:34+00:00",
+    "modified_time": "2023-06-19T00:22:06+00:00",
+    "release_time": "2022-12-12T10:37:34+00:00",
+    "content_rating": [
+        "unrated"
+    ],
+    "content_rating_class": "unrated",
+    "rating_mod_locked": false,
+    "license": null,
+    "privacy": {
+        "view": "anybody",
+        "embed": "public",
+        "download": true,
+        "add": true,
+        "comments": "nobody"
+    },
+    "pictures": {
+        "uri": "/videos/780309022/pictures/1566326393",
+        "active": true,
+        "type": "custom",
+        "base_link": "https://i.vimeocdn.com/video/1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d",
+        "sizes": [
+            {
+                "width": 100,
+                "height": 75,
+                "link": "https://i.vimeocdn.com/video/1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_100x75?r=pad",
+                "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_100x75&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+            },
+            {
+                "width": 200,
+                "height": 150,
+                "link": "https://i.vimeocdn.com/video/1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_200x150?r=pad",
+                "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_200x150&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+            },
+            {
+                "width": 295,
+                "height": 166,
+                "link": "https://i.vimeocdn.com/video/1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_295x166?r=pad",
+                "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_295x166&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+            },
+            {
+                "width": 640,
+                "height": 360,
+                "link": "https://i.vimeocdn.com/video/1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_640x360?r=pad",
+                "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_640x360&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+            },
+            {
+                "width": 960,
+                "height": 540,
+                "link": "https://i.vimeocdn.com/video/1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_960x540?r=pad",
+                "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_960x540&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+            },
+            {
+                "width": 1280,
+                "height": 720,
+                "link": "https://i.vimeocdn.com/video/1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_1280x720?r=pad",
+                "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_1280x720&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+            },
+            {
+                "width": 1920,
+                "height": 1080,
+                "link": "https://i.vimeocdn.com/video/1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_1920x1080?r=pad",
+                "link_with_play_button": "https://i.vimeocdn.com/filter/overlay?src0=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F1566326393-65b94b0c19fc64dd3b13bc1ca330c95431be0bbc0278c0c8ca142f72c384ffb4-d_1920x1080&src1=http%3A%2F%2Ff.vimeocdn.com%2Fp%2Fimages%2Fcrawler_play.png"
+            }
+        ],
+        "resource_key": "2a0925fa9716382d52afb89ac4dda13cbe3ecaf3",
+        "default_picture": false
+    },
+    "tags": [],
+    "stats": {
+        "plays": 75
+    },
+    "categories": [],
+    "uploader": {
+        "pictures": {
+            "uri": "/users/189623875/pictures/80166380",
+            "active": true,
+            "type": "custom",
+            "base_link": "https://i.vimeocdn.com/portrait/80166380",
+            "sizes": [
+                {
+                    "width": 30,
+                    "height": 30,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_30x30"
+                },
+                {
+                    "width": 72,
+                    "height": 72,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_72x72"
+                },
+                {
+                    "width": 75,
+                    "height": 75,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_75x75"
+                },
+                {
+                    "width": 100,
+                    "height": 100,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_100x100"
+                },
+                {
+                    "width": 144,
+                    "height": 144,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_144x144"
+                },
+                {
+                    "width": 216,
+                    "height": 216,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_216x216"
+                },
+                {
+                    "width": 288,
+                    "height": 288,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_288x288"
+                },
+                {
+                    "width": 300,
+                    "height": 300,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_300x300"
+                },
+                {
+                    "width": 360,
+                    "height": 360,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_360x360"
+                }
+            ],
+            "resource_key": "c1492bcd611108e08dec660b99880ddfcb1e475c",
+            "default_picture": false
+        }
+    },
+    "metadata": {
+        "connections": {
+            "comments": {
+                "uri": "/videos/780309022/comments",
+                "options": [
+                    "GET",
+                    "POST"
+                ],
+                "total": 0
+            },
+            "credits": {
+                "uri": "/videos/780309022/credits",
+                "options": [
+                    "GET",
+                    "POST"
+                ],
+                "total": 0
+            },
+            "likes": {
+                "uri": "/videos/780309022/likes",
+                "options": [
+                    "GET"
+                ],
+                "total": 0
+            },
+            "pictures": {
+                "uri": "/videos/780309022/pictures",
+                "options": [
+                    "GET",
+                    "POST"
+                ],
+                "total": 1
+            },
+            "texttracks": {
+                "uri": "/videos/780309022/texttracks",
+                "options": [
+                    "GET",
+                    "POST"
+                ],
+                "total": 1
+            },
+            "related": null,
+            "recommendations": {
+                "uri": "/videos/780309022/recommendations",
+                "options": [
+                    "GET"
+                ]
+            },
+            "albums": {
+                "uri": "/videos/780309022/albums",
+                "options": [
+                    "GET",
+                    "PATCH"
+                ],
+                "total": 0
+            },
+            "available_albums": {
+                "uri": "/videos/780309022/available_albums",
+                "options": [
+                    "GET"
+                ],
+                "total": 0
+            },
+            "available_channels": {
+                "uri": "/videos/780309022/available_channels",
+                "options": [
+                    "GET"
+                ],
+                "total": 0
+            },
+            "versions": {
+                "uri": "/videos/780309022/versions",
+                "options": [
+                    "GET"
+                ],
+                "total": 1,
+                "current_uri": "/videos/780309022/versions/749051697",
+                "resource_key": "bb6a397db92cca2d4725ec4da8c6935a5490e033",
+                "latest_incomplete_version": null
+            }
+        },
+        "interactions": {
+            "watchlater": {
+                "uri": "/users/189623875/watchlater/780309022",
+                "options": [
+                    "GET",
+                    "PUT",
+                    "DELETE"
+                ],
+                "added": false,
+                "added_time": null
+            },
+            "report": {
+                "uri": "/videos/780309022/report",
+                "options": [
+                    "POST"
+                ],
+                "reason": [
+                    "pornographic",
+                    "harassment",
+                    "ripoff",
+                    "incorrect rating",
+                    "spam",
+                    "causes harm",
+                    "csam"
+                ]
+            },
+            "view_team_members": {
+                "uri": "/videos/780309022/teammembers",
+                "options": [
+                    "GET"
+                ]
+            },
+            "edit": {
+                "uri": "/videos/780309022",
+                "options": [
+                    "PATCH"
+                ],
+                "blocked_fields": []
+            },
+            "edit_content_rating": {
+                "uri": "/videos/780309022",
+                "options": [
+                    "PATCH"
+                ],
+                "content_rating": [
+                    "language",
+                    "drugs",
+                    "violence",
+                    "nudity",
+                    "advertisement",
+                    "safe",
+                    "unrated"
+                ]
+            },
+            "edit_privacy": {
+                "uri": "/videos/780309022",
+                "options": [
+                    "PATCH"
+                ],
+                "content_type": "application/vnd.vimeo.video",
+                "properties": [
+                    {
+                        "name": "privacy.view",
+                        "required": true,
+                        "options": [
+                            "anybody",
+                            "nobody",
+                            "password",
+                            "disable",
+                            "unlisted"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "uri": "/videos/780309022",
+                "options": [
+                    "DELETE"
+                ]
+            },
+            "can_update_privacy_to_public": {
+                "uri": "/videos/780309022",
+                "options": [
+                    "PATCH"
+                ]
+            },
+            "invite": {
+                "uri": "/users/189623875/team_user_clip_access_grants",
+                "options": [
+                    "GET",
+                    "POST"
+                ]
+            },
+            "trim": {
+                "uri": "/videos/780309022/cliptrim",
+                "options": [
+                    "GET",
+                    "POST"
+                ]
+            },
+            "validate": {
+                "uri": "/videos/780309022/validate",
+                "options": [
+                    "PUT"
+                ]
+            }
+        },
+        "is_vimeo_create": false,
+        "is_screen_record": false
+    },
+    "manage_link": "/manage/videos/780309022",
+    "user": {
+        "uri": "/users/189623875",
+        "name": "buzzflix",
+        "link": "https://vimeo.com/buzzflix",
+        "capabilities": {
+            "hasLiveSubscription": false,
+            "hasEnterpriseLihp": false,
+            "hasSvvTimecodedComments": true,
+            "hasSimplifiedEnterpriseAccount": false
+        },
+        "location": "Andheri East, Mumbai, Maharashtra, India",
+        "gender": "n",
+        "bio": "MOvies",
+        "short_bio": "Movies",
+        "created_time": "2022-11-26T12:52:45+00:00",
+        "pictures": {
+            "uri": "/users/189623875/pictures/80166380",
+            "active": true,
+            "type": "custom",
+            "base_link": "https://i.vimeocdn.com/portrait/80166380",
+            "sizes": [
+                {
+                    "width": 30,
+                    "height": 30,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_30x30"
+                },
+                {
+                    "width": 72,
+                    "height": 72,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_72x72"
+                },
+                {
+                    "width": 75,
+                    "height": 75,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_75x75"
+                },
+                {
+                    "width": 100,
+                    "height": 100,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_100x100"
+                },
+                {
+                    "width": 144,
+                    "height": 144,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_144x144"
+                },
+                {
+                    "width": 216,
+                    "height": 216,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_216x216"
+                },
+                {
+                    "width": 288,
+                    "height": 288,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_288x288"
+                },
+                {
+                    "width": 300,
+                    "height": 300,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_300x300"
+                },
+                {
+                    "width": 360,
+                    "height": 360,
+                    "link": "https://i.vimeocdn.com/portrait/80166380_360x360"
+                }
+            ],
+            "resource_key": "c1492bcd611108e08dec660b99880ddfcb1e475c",
+            "default_picture": false
+        },
+        "websites": [],
+        "metadata": {
+            "connections": {
+                "albums": {
+                    "uri": "/users/189623875/albums",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "appearances": {
+                    "uri": "/users/189623875/appearances",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "categories": {
+                    "uri": "/users/189623875/categories",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "channels": {
+                    "uri": "/users/189623875/channels",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "feed": {
+                    "uri": "/users/189623875/feed",
+                    "options": [
+                        "GET"
+                    ]
+                },
+                "followers": {
+                    "uri": "/users/189623875/followers",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "following": {
+                    "uri": "/users/189623875/following",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "groups": {
+                    "uri": "/users/189623875/groups",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "likes": {
+                    "uri": "/users/189623875/likes",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "membership": {
+                    "uri": "/users/189623875/membership/",
+                    "options": [
+                        "PATCH"
+                    ]
+                },
+                "moderated_channels": {
+                    "uri": "/users/189623875/channels?filter=moderated",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "portfolios": {
+                    "uri": "/users/189623875/portfolios",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "videos": {
+                    "uri": "/users/189623875/videos",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 4
+                },
+                "watchlater": {
+                    "uri": "/users/189623875/watchlater",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "shared": {
+                    "uri": "/users/189623875/shared/videos",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "pictures": {
+                    "uri": "/users/189623875/pictures",
+                    "options": [
+                        "GET",
+                        "POST"
+                    ],
+                    "total": 1
+                },
+                "watched_videos": {
+                    "uri": "/me/watched/videos",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                },
+                "folders_root": {
+                    "uri": "/users/189623875/folders/root",
+                    "options": [
+                        "GET"
+                    ]
+                },
+                "folders": {
+                    "uri": "/users/189623875/folders",
+                    "options": [
+                        "GET",
+                        "POST"
+                    ],
+                    "total": 1
+                },
+                "teams": {
+                    "uri": "/users/189623875/teams",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 1
+                },
+                "permission_policies": {
+                    "uri": "/users/189623875/permission_policies",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 6
+                },
+                "block": {
+                    "uri": "/me/block",
+                    "options": [
+                        "GET"
+                    ],
+                    "total": 0
+                }
+            }
+        },
+        "location_details": {
+            "formatted_address": "Andheri East, Mumbai, Maharashtra, India",
+            "latitude": 19.1178551,
+            "longitude": 72.8631287,
+            "city": "Mumbai Suburban",
+            "state": "Maharashtra",
+            "neighborhood": null,
+            "sub_locality": "Andheri East",
+            "state_iso_code": "MH",
+            "country": "India",
+            "country_iso_code": "IN"
+        },
+        "skills": [],
+        "available_for_hire": false,
+        "can_work_remotely": false,
+        "preferences": {
+            "videos": {
+                "rating": [
+                    "unrated"
+                ],
+                "privacy": {
+                    "view": "nobody",
+                    "comments": "anybody",
+                    "embed": "public",
+                    "download": true,
+                    "add": true,
+                    "allow_share_link": true
+                }
+            },
+            "webinar_registrant_lower_watermark_banner_dismissed": []
+        },
+        "content_filter": [
+            "language",
+            "drugs",
+            "violence",
+            "nudity",
+            "safe",
+            "unrated"
+        ],
+        "resource_key": "9f314b07796e081f89da42fc4af7f678b85e14fb",
+        "account": "standard"
+    },
+    "parent_folder": null,
+    "last_user_action_event_date": "2023-06-15T15:51:32+00:00",
+    "review_page": {
+        "active": true,
+        "link": "https://vimeo.com/buzzflix/review/780309022/05ccd66b3e",
+        "is_shareable": true
+    },
+    "files": [
+        {
+            "quality": "sd",
+            "rendition": "540p",
+            "type": "video/mp4",
+            "width": 960,
+            "height": 540,
+            "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/rendition/540p/file.mp4?loc=external&oauth2_token_id=1726698380&signature=26340b7e8c3ad8180a43ee24cb3f85e702aa4a29671519820b4f8c68f3ed6eda",
+            "created_time": "2022-12-12T10:45:40+00:00",
+            "fps": 25,
+            "size": 13322420,
+            "md5": null,
+            "public_name": "540p",
+            "size_short": "12.71MB"
+        },
+        {
+            "quality": "sd",
+            "rendition": "360p",
+            "type": "video/mp4",
+            "width": 640,
+            "height": 360,
+            "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/rendition/360p/file.mp4?loc=external&oauth2_token_id=1726698380&signature=232ef6098f82746078c50d4f3d548fec502f7784ecca761e10926beed7bba642",
+            "created_time": "2022-12-12T10:43:07+00:00",
+            "fps": 25,
+            "size": 7525743,
+            "md5": null,
+            "public_name": "360p",
+            "size_short": "7.18MB"
+        },
+        {
+            "quality": "uhd",
+            "rendition": "2160p",
+            "type": "video/mp4",
+            "width": 3840,
+            "height": 2160,
+            "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/rendition/2160p/file.mp4?loc=external&oauth2_token_id=1726698380&signature=baaa05b70176bb54366892a35e54f30446722d49d959574c713e313166de28d7",
+            "created_time": "2022-12-12T10:58:43+00:00",
+            "fps": 25,
+            "size": 180643303,
+            "md5": null,
+            "public_name": "2160p",
+            "size_short": "172.27MB"
+        },
+        {
+            "quality": "sd",
+            "rendition": "240p",
+            "type": "video/mp4",
+            "width": 426,
+            "height": 240,
+            "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/rendition/240p/file.mp4?loc=external&oauth2_token_id=1726698380&signature=43f4b06f83a3983471d23d0a594889871cc112bca8042fa552bd7d5682825071",
+            "created_time": "2022-12-12T10:44:23+00:00",
+            "fps": 25,
+            "size": 4562629,
+            "md5": null,
+            "public_name": "240p",
+            "size_short": "4.35MB"
+        },
+        {
+            "quality": "uhd",
+            "rendition": "1440p",
+            "type": "video/mp4",
+            "width": 2560,
+            "height": 1440,
+            "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/rendition/1440p/file.mp4?loc=external&oauth2_token_id=1726698380&signature=3d019b905831a3ce16735e908b288c4c69874a6035c2e146c1e49c75cbe8bb83",
+            "created_time": "2022-12-12T10:51:02+00:00",
+            "fps": 25,
+            "size": 82738357,
+            "md5": null,
+            "public_name": "1440p",
+            "size_short": "78.91MB"
+        },
+        {
+            "quality": "hd",
+            "rendition": "720p",
+            "type": "video/mp4",
+            "width": 1280,
+            "height": 720,
+            "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/rendition/720p/file.mp4?loc=external&oauth2_token_id=1726698380&signature=931ba7bbd2bc1230947cb88e915b0b0794f69e3d310ad7b9e09c83aad6c082bc",
+            "created_time": "2022-12-12T10:43:40+00:00",
+            "fps": 25,
+            "size": 21428317,
+            "md5": null,
+            "public_name": "720p",
+            "size_short": "20.44MB"
+        },
+        {
+            "quality": "hd",
+            "rendition": "1080p",
+            "type": "video/mp4",
+            "width": 1920,
+            "height": 1080,
+            "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/rendition/1080p/file.mp4?loc=external&oauth2_token_id=1726698380&signature=df9221e7d22824c1ada0a061797accf7f4ee814694324081f1e04d55e51f6dfc",
+            "created_time": "2022-12-12T10:47:52+00:00",
+            "fps": 25,
+            "size": 42347476,
+            "md5": null,
+            "public_name": "1080p",
+            "size_short": "40.39MB"
+        },
+        {
+            "quality": "hls",
+            "rendition": "adaptive",
+            "type": "video/mp4",
+            "link": "https://player.vimeo.com/external/780309022.m3u8?s=c9a54892b812f7567259048c15bc850a789047f3&oauth2_token_id=1726698380",
+            "created_time": "2022-12-12T10:45:40+00:00",
+            "fps": 25,
+            "size": 13322420,
+            "md5": null,
+            "public_name": "540p",
+            "size_short": "12.71MB"
+        }
+    ],
+    "download": [
+        {
+            "quality": "sd",
+            "rendition": "540p",
+            "type": "video/mp4",
+            "width": 960,
+            "height": 540,
+            "expires": "2023-06-20T00:30:41+00:00",
+            "link": "https://player.vimeo.com/progressive_redirect/download/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/6b6cfa12-c9c896ca/ek_unsuni_dhun_-_trailer.mp4%20%28540p%29.mp4?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=20a7ea3703687800ffd8abd1a420bf0afee55ed7af06fce1c42ab1a72eb1ae6c",
+            "created_time": "2022-12-12T10:45:40+00:00",
+            "fps": 25,
+            "size": 13322420,
+            "md5": null,
+            "public_name": "540p",
+            "size_short": "12.71MB"
+        },
+        {
+            "quality": "sd",
+            "rendition": "360p",
+            "type": "video/mp4",
+            "width": 640,
+            "height": 360,
+            "expires": "2023-06-20T00:30:41+00:00",
+            "link": "https://player.vimeo.com/progressive_redirect/download/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/7cb7e5c2-c9c896ca/ek_unsuni_dhun_-_trailer.mp4%20%28360p%29.mp4?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=f10745a7a9ef3575b1f14b7561094c00b61a0a1e934840c416a203a7565188a7",
+            "created_time": "2022-12-12T10:43:07+00:00",
+            "fps": 25,
+            "size": 7525743,
+            "md5": null,
+            "public_name": "360p",
+            "size_short": "7.18MB"
+        },
+        {
+            "quality": "hd",
+            "rendition": "1080p",
+            "type": "video/mp4",
+            "width": 1920,
+            "height": 1080,
+            "expires": "2023-06-20T00:30:41+00:00",
+            "link": "https://player.vimeo.com/progressive_redirect/download/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/3e640eb2-c9c896ca/ek_unsuni_dhun_-_trailer.mp4%20%281080p%29.mp4?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=15063f9dc2a466415a7831e6fd8ad5e5421542720eb5da5a923ab982cbad1c66",
+            "created_time": "2022-12-12T10:47:52+00:00",
+            "fps": 25,
+            "size": 42347476,
+            "md5": null,
+            "public_name": "1080p",
+            "size_short": "40.39MB"
+        },
+        {
+            "quality": "uhd",
+            "rendition": "1440p",
+            "type": "video/mp4",
+            "width": 2560,
+            "height": 1440,
+            "expires": "2023-06-20T00:30:41+00:00",
+            "link": "https://player.vimeo.com/progressive_redirect/download/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/4ab62036-c9c896ca/ek_unsuni_dhun_-_trailer.mp4%20%281440p%29.mp4?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=67698685b324e0da941ca207b06f52ab88d36d72e10c2044dcd1183d7fbbfecd",
+            "created_time": "2022-12-12T10:51:02+00:00",
+            "fps": 25,
+            "size": 82738357,
+            "md5": null,
+            "public_name": "1440p",
+            "size_short": "78.91MB"
+        },
+        {
+            "quality": "hd",
+            "rendition": "720p",
+            "type": "video/mp4",
+            "width": 1280,
+            "height": 720,
+            "expires": "2023-06-20T00:30:41+00:00",
+            "link": "https://player.vimeo.com/progressive_redirect/download/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/706b6482-c9c896ca/ek_unsuni_dhun_-_trailer.mp4%20%28720p%29.mp4?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=0e3803b1405727a6d8bbac684463a43f5478b3a55116c125dbc3ab0172bfd401",
+            "created_time": "2022-12-12T10:43:40+00:00",
+            "fps": 25,
+            "size": 21428317,
+            "md5": null,
+            "public_name": "720p",
+            "size_short": "20.44MB"
+        },
+        {
+            "quality": "uhd",
+            "rendition": "2160p",
+            "type": "video/mp4",
+            "width": 3840,
+            "height": 2160,
+            "expires": "2023-06-20T00:30:41+00:00",
+            "link": "https://player.vimeo.com/progressive_redirect/download/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/017be9da-c9c896ca/ek_unsuni_dhun_-_trailer.mp4%20%282160p%29.mp4?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=0da326c1a4e002c655375879f26c58ad78b62c14315e077c50fd67c25fd4e2b9",
+            "created_time": "2022-12-12T10:58:43+00:00",
+            "fps": 25,
+            "size": 180643303,
+            "md5": null,
+            "public_name": "2160p",
+            "size_short": "172.27MB"
+        },
+        {
+            "quality": "sd",
+            "rendition": "240p",
+            "type": "video/mp4",
+            "width": 426,
+            "height": 240,
+            "expires": "2023-06-20T00:30:41+00:00",
+            "link": "https://player.vimeo.com/progressive_redirect/download/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/3d0622e9-c9c896ca/ek_unsuni_dhun_-_trailer.mp4%20%28240p%29.mp4?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=3dd740696eb8d90721c8994e4c3e925295edd48c8cc9739cbf6d72bb57122b26",
+            "created_time": "2022-12-12T10:44:23+00:00",
+            "fps": 25,
+            "size": 4562629,
+            "md5": null,
+            "public_name": "240p",
+            "size_short": "4.35MB"
+        }
+    ],
+    "play": {
+        "progressive": [
+            {
+                "type": "video/mp4",
+                "codec": "H264",
+                "width": 426,
+                "height": 240,
+                "link_expiration_time": "2023-06-20T00:30:41+00:00",
+                "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/3d0622e9-c9c896ca?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=b4409683427f9acb05ddd62b5257c4f9d9b7e3e70c55134b6bd8bca39d1cfe7a",
+                "created_time": "2022-12-12T10:44:23+00:00",
+                "fps": 25,
+                "size": 4562629,
+                "md5": null,
+                "rendition": "240p"
+            },
+            {
+                "type": "video/mp4",
+                "codec": "H264",
+                "width": 960,
+                "height": 540,
+                "link_expiration_time": "2023-06-20T00:30:41+00:00",
+                "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/6b6cfa12-c9c896ca?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=9e2925e3690a4c164f764c0e4ab60a5f72938492ade0c845f0ae5a271bc38a78",
+                "created_time": "2022-12-12T10:45:40+00:00",
+                "fps": 25,
+                "size": 13322420,
+                "md5": null,
+                "rendition": "540p"
+            },
+            {
+                "type": "video/mp4",
+                "codec": "H264",
+                "width": 640,
+                "height": 360,
+                "link_expiration_time": "2023-06-20T00:30:41+00:00",
+                "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/7cb7e5c2-c9c896ca?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=7665eedcdaa9cd4132b61b18541993a65f3defa732f9e9744a7b9ecc7ef1f0f0",
+                "created_time": "2022-12-12T10:43:07+00:00",
+                "fps": 25,
+                "size": 7525743,
+                "md5": null,
+                "rendition": "360p"
+            },
+            {
+                "type": "video/mp4",
+                "codec": "H264",
+                "width": 1920,
+                "height": 1080,
+                "link_expiration_time": "2023-06-20T00:30:41+00:00",
+                "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/3e640eb2-c9c896ca?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=d0c8a05780a55b217fe9546d81b31c47a9bc8b9727eb257fc33d9d656963085d",
+                "created_time": "2022-12-12T10:47:52+00:00",
+                "fps": 25,
+                "size": 42347476,
+                "md5": null,
+                "rendition": "1080p"
+            },
+            {
+                "type": "video/mp4",
+                "codec": "H264",
+                "width": 2560,
+                "height": 1440,
+                "link_expiration_time": "2023-06-20T00:30:41+00:00",
+                "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/4ab62036-c9c896ca?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=c1ee35b43ce4fdc4d21c22007124c8d9964624f2c3c5901859e329c35bc685e6",
+                "created_time": "2022-12-12T10:51:02+00:00",
+                "fps": 25,
+                "size": 82738357,
+                "md5": null,
+                "rendition": "2k"
+            },
+            {
+                "type": "video/mp4",
+                "codec": "H264",
+                "width": 1280,
+                "height": 720,
+                "link_expiration_time": "2023-06-20T00:30:41+00:00",
+                "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/706b6482-c9c896ca?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=f1c2adec7813c96bdb06db4a59c6dcc153b5134a079d191a99c473d2d74b7b10",
+                "created_time": "2022-12-12T10:43:40+00:00",
+                "fps": 25,
+                "size": 21428317,
+                "md5": null,
+                "rendition": "720p"
+            },
+            {
+                "type": "video/mp4",
+                "codec": "H264",
+                "width": 3840,
+                "height": 2160,
+                "link_expiration_time": "2023-06-20T00:30:41+00:00",
+                "link": "https://player.vimeo.com/progressive_redirect/playback/780309022/container/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/017be9da-c9c896ca?expires=1687221041&loc=external&oauth2_token_id=1726698380&signature=8b3fe2ca68b8638bd7adab4237e61f624a32013abe49054a7201ade41f3ed67b",
+                "created_time": "2022-12-12T10:58:43+00:00",
+                "fps": 25,
+                "size": 180643303,
+                "md5": null,
+                "rendition": "4k"
+            }
+        ],
+        "hls": {
+            "link_expiration_time": "2023-06-20T00:28:42+00:00",
+            "link": "https://player.vimeo.com/play/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/hls.m3u8?s=780309022_1687220922_c7227f4660753796e72e0ef04ea8760e&context=Vimeo%5CController%5CApi%5CResources%5CVideoController.&oauth2_token_id=1726698380"
+        },
+        "dash": {
+            "link_expiration_time": "2023-06-20T00:28:42+00:00",
+            "link": "https://player.vimeo.com/play/071ef74a-daa6-442f-b4ae-ec5c9ee8789c/dash.mpd?s=780309022_1687220922_c7227f4660753796e72e0ef04ea8760e&context=Vimeo%5CController%5CApi%5CResources%5CVideoController.&oauth2_token_id=1726698380"
+        },
+        "status": "playable"
+    },
+    "app": {
+        "name": "Parallel Uploader",
+        "uri": "/apps/87099"
+    },
+    "status": "available",
+    "resource_key": "097bc0056aa045a8c1c30e0a7007dbff0137e82d",
+    "upload": {
+        "status": "complete",
+        "link": null,
+        "upload_link": null,
+        "complete_uri": null,
+        "form": null,
+        "approach": null,
+        "size": null,
+        "redirect_url": null
+    },
+    "transcode": {
+        "status": "complete"
+    },
+    "is_playable": true,
+    "has_audio": true
+}
