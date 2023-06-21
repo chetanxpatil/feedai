@@ -8,6 +8,7 @@ import 'package:subtitle_wrapper_package/subtitle_wrapper.dart';
 import 'package:video_player/video_player.dart';
 import 'package:http/http.dart' as http;
 
+
 enum VideoOptions { speed, subtitle, quality, share, report }
 
 class MainVideoPlayer extends StatefulWidget {
